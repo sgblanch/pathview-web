@@ -1,6 +1,6 @@
 FROM node:lts-alpine AS node
 
-COPY resources /web/
+COPY resources/ /web/resources/
 WORKDIR /web/resources
 
 RUN npm install && \
