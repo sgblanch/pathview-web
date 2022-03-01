@@ -1,0 +1,17 @@
+{{define "output"}}
+<div class="rounded-sm border border-gray-300">
+    <label class="flex w-full p-1 bg-gray-200 h-14 items-center text-xl font-semibold">Output</label>
+    <div class="p-1 flex flex-wrap items-center">
+        <label class="md:w-1/4 text-right pr-3">File Suffix</label>
+        <input
+            class="md:w-1/4 h-10 border border-gray-300 rounded-md focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            type="text" value="pathview">
+        <label class="md:w-1/4 text-right pr-3">File Format</label>
+        <select
+            class="md:w-1/4 h-10 border border-gray-300 rounded-md focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+            <option value="png" selected>PNG (KEGG Native)</option>
+            <option value="pdf">PDF (Graphviz)</option>
+        </select>
+    </div>
+</div>
+{{end}}

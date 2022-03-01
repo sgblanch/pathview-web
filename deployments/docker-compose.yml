@@ -1,0 +1,79 @@
+---
+version: "3.8"
+services:
+  postgres:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  redis:
+    image: redis:6-alpine
+    volumes:
+      - redis:/data
+
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - 80:80
+    depends_on:
+      - pathview-web
+    volumes:
+      - ./etc/nginx.prod.conf:/etc/nginx/templates/default.conf.template
+
+  pathview-web:
+    image: pathview-web:latest
+    build:
+      context: ..
+      dockerfile: deployments/Dockerfile
+    environment:
+      - KEGG_DIR
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    env_file:
+      - pathview.env
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - kegg:${KEGG_DIR}
+
+  runner:
+    image: pathview-runner:latest
+    build:
+      context: ..
+      dockerfile: deployments/Dockerfile.runner
+    profiles: [ "never" ]
+    environment:
+      - KEGG_DIR
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - kegg:${KEGG_DIR}
+      - ./scripts:/pathview/scripts
+      - ./data:/data
+
+  node:
+    image: node:lts-alpine
+    profiles: [ "dev" ]
+    working_dir: /app/resources
+    entrypoint: [ 'npm', 'run', 'watch' ]
+    volumes:
+      - ../resources:/app/resources:ro
+      - ../static:/app/static
+      - ../template:/app/template:ro
+      - node_modules:/app/resources/node_modules
+
+volumes:
+  kegg:
+  node_modules:
+  postgres:
+  redis:

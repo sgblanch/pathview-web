@@ -1,0 +1,35 @@
+{
+  "name": "pathview",
+  "version": "1.0.0",
+  "description": "",
+  "main": "js/pathview.js",
+  "private": true,
+  "browserslist": [
+    "defaults"
+  ],
+  "scripts": {
+    "build": "node js/sprites.js && webpack",
+    "watch": "node js/sprites.js && webpack --watch"
+  },
+  "author": "Steven Blanchard <sgblanch@uncc.edu>",
+  "license": "MIT",
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.4.0",
+    "alpinejs": "^3.9.0",
+    "browserslist": "^4.19.3",
+    "css-loader": "^6.6.0",
+    "cssnano": "^5.0.17",
+    "heroicons": "^1.0.5",
+    "mini-css-extract-plugin": "^2.5.3",
+    "papaparse": "^5.3.1",
+    "postcss": "^8.4.6",
+    "postcss-cli": "^9.1.0",
+    "postcss-loader": "^6.2.1",
+    "postcss-preset-env": "^7.4.1",
+    "svgstore-cli": "^2.0.1",
+    "tailwindcss": "^3.0.23",
+    "tailwindcss-cli": "^0.1.2",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2"
+  }
+}

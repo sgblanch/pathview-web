@@ -1,0 +1,13 @@
+---
+version: "3.8"
+services:
+  nginx:
+    volumes:
+      - ./etc/nginx.dev.conf:/etc/nginx/templates/default.conf.template:ro
+
+  pathview-web:
+    ports:
+      - 8000:8000
+    volumes:
+      - ../static:/app/static:ro
+      - ../template:/app/template:ro

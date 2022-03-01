@@ -1,0 +1,36 @@
+FROM pathview-web:latest AS builder
+
+########################################################################
+FROM rocker/r-ver:4.1.2
+
+LABEL description="runner for web front-end to pathview R package" \
+    url="https://github.com/sgblanch/pathview-web" \
+    maintainer="Steven Blanchard <sgblanch@uncc.edu>"
+
+WORKDIR /pathview
+
+COPY scripts scripts
+
+RUN useradd pathview \
+    && install -m 0755 -o pathview -g pathview -d /data \
+    && printf "/usr/local/lib/R/lib\n" > /etc/ld.so.conf.d/R.conf \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends libpq5 libxml2 libxt6 \
+    && BUILDDEPS="libcurl4-openssl-dev \
+    libpng-dev \
+    libpq-dev \
+    libssl-dev \
+    libxml2-dev \
+    pkgconf \
+    zlib1g-dev" \
+    && apt-get install -y --no-install-recommends $BUILDDEPS \
+    && Rscript --vanilla scripts/install.R \
+    && rm scripts/install.R \
+    && apt-get remove --purge -y $BUILDDEPS \
+    && apt-get autoremove -y \
+    && apt-get autoclean -y \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /app/pathview-web .
+
+USER pathview

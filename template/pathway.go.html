@@ -1,0 +1,51 @@
+{{define "pathway"}}
+<div x-data="pathway" class="rounded-sm border border-gray-300">
+    <div class="relative">
+        <h2 class="flex w-full p-1 bg-gray-200 h-14 items-center text-xl font-semibold">Pathway Selection</h2>
+        <div class="absolute inset-y-0 right-0 items-center px-2 inline-flex" role="group" aria-label="Button group">
+            <button
+                class="h-10 px-5 text-gray-200 transition-colors duration-150 bg-indigo-600 rounded-l-lg focus:shadow-outline hover:bg-indigo-800">Automatic</button>
+            <button
+                class="h-10 px-5 text-gray-200 transition-colors duration-150 bg-indigo-400 rounded-r-lg focus:shadow-outline hover:bg-indigo-800">Manual</button>
+        </div>
+    </div>
+
+    <template x-bind="table">
+        <div class="mt-1 mx-1 overflow-x-auto tabular-nums">
+            <table class="min-w-full">
+                <tbody>
+                    <template x-bind="rows">
+                        <tr class="border-b">
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 relative"
+                                x-text="item">
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 relative">
+                                <div class="absolute inset-y-0 right-0 flex items-center px-4">
+                                    <svg x-bind="remove"
+                                        class="w-5 h-5 ml-3 fill-gray-900 stroke-gray-900 flex icon hover:fill-indigo-600 hover:stroke-indigo-600">
+                                        <use xlink:href="/static/sprites.svg#x" />
+                                    </svg>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </template>
+
+
+    <div x-bind="combobox" class="relative p-1">
+        <input type="text" x-bind="search"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 icon-chevron-downx form-select">
+        <ul x-bind="options" hidden
+            class="absolute z-10 w-full mt-1 bg-white rounded-md shadow-lg py-1 overflow-auto text-base leading-6 rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
+            <template x-for="(item, index) in results" :key="index">
+                <li class="relative py-2 pl-3 text-gray-900 cursor-default select-none pr-9 block font-normal truncate"
+                    x-bind="option">
+                </li>
+            </template>
+        </ul>
+    </div>
+</div>
+{{end}}

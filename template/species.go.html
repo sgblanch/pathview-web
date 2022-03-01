@@ -1,0 +1,17 @@
+{{define "species"}}
+<div class="rounded-sm border border-gray-300">
+    <label class="flex w-full p-1 bg-gray-200 h-14 items-center text-xl font-semibold">Species</label>
+    <div x-data="species" x-bind="combobox" class="relative p-1">
+        <input type="text" x-bind="search"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 icon-chevron-downx form-select">
+        <ul x-bind="options" hidden
+            class="absolute z-10 w-full mt-1 bg-white rounded-md shadow-lg py-1 overflow-auto text-base leading-6 rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
+            <template x-for="(item, index) in results" :key="index">
+                <li class="relative py-2 pl-3 text-gray-900 cursor-default select-none pr-9 block font-normal truncate"
+                    x-bind="option">
+                </li>
+            </template>
+        </ul>
+    </div>
+</div>
+{{end}}
