@@ -45,6 +45,7 @@ func init() {
 func serve(cmd *cobra.Command, args []string) {
 	log.SetPrefix("[kegg:server]")
 
+	viper.BindEnv("csrf-key")
 	viper.SetDefault("listen", "localhost:8000")
 	viper.BindEnv("redis.address", "REDIS_ADDR")
 	viper.SetDefault("redis.address", "localhost:6379")

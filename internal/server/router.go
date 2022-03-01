@@ -59,7 +59,8 @@ func (p *Router) Router() *gin.Engine {
 	router.Use(p.securitySetup())
 	router.Use(p.sessionSetup())
 	router.Use(p.headerSetup())
-	// router.Use(CSRF())
+
+	csrf := CSRF()
 
 	router.SetFuncMap(funcMap())
 	router.LoadHTMLGlob("template/*.go.html")
@@ -82,7 +83,17 @@ func (p *Router) Router() *gin.Engine {
 
 	pathview := router.Group("pathview")
 	{
+		pathview.Use(csrf)
 		p.pathviewGroup(pathview)
+	}
+
+	login := router.Group("login")
+	{
+		login.Use(csrf)
+		login.GET(".", func(c *gin.Context) {
+			c.HTML(200, "login.go.html", pathview)
+		})
+		auth.Google(login)
 	}
 
 	v1 := router.Group("api/v1")
@@ -91,14 +102,6 @@ func (p *Router) Router() *gin.Engine {
 		{
 			p.KeggGroup(kegg)
 		}
-	}
-
-	login := router.Group("login")
-	{
-		// g.GET("/", func(c *gin.Context) {
-		// 	c.HTML(200, "login.go.html", pathview)
-		// })
-		auth.Google(login)
 	}
 
 	return router
