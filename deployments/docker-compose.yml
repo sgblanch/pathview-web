@@ -67,7 +67,7 @@ services:
     working_dir: /app/resources
     entrypoint: [ 'npm', 'run', 'watch' ]
     volumes:
-      - ../resources:/app/resources:ro
+      - ../resources:/app/resources
       - ../static:/app/static
       - ../template:/app/template:ro
       - node_modules:/app/resources/node_modules
