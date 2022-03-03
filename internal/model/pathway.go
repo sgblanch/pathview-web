@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/sgblanch/pathview-web/internal/config"
 	"github.com/sgblanch/pathview-web/internal/db"
@@ -56,6 +57,41 @@ func (p Pathway) Search(query string, organism int) ([]Pathway, error) {
 	}
 
 	return paths, nil
+}
+
+func (p Pathway) File() string {
+	return "list/pathway/ko.gz"
+}
+
+func (p Pathway) FromRecord(record []string) (*Kegg, error) {
+	var pathway Kegg
+
+	id, err := strconv.Atoi(strings.TrimPrefix(record[0], "path:ko"))
+	if err != nil {
+		return nil, err
+	}
+
+	pathway = Pathway{
+		ID:   PathwayID(id),
+		Name: record[1],
+	}
+
+	return &pathway, nil
+}
+
+func (p Pathway) Create(pathways ...Kegg) error {
+	_, err := config.Get().DB.Chunk(240, _sql["pathway_insert"], pathways)
+
+	return err
+}
+
+func (p Pathway) Initialize() error {
+	return nil
+}
+
+func (p Pathway) Finalize() error {
+	_, err := config.Get().DB.Exec(_sql["organism_pathway_hide"])
+	return err
 }
 
 type PathwayID int

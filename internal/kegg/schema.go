@@ -68,7 +68,7 @@ var _create = []string{
 var _index = []string{
 	`create unique index on kegg_new.organism(code);`,
 	`create index on kegg_new.organism_pathway(org_id);`,
-	`update kegg_new.organism as o set (uniprot, ncbi_tax_id) = (select uniprot, ncbi_tax_id from kegg_new.genome as g where g.code = o.code);`,
+	// `update kegg_new.organism as o set (uniprot, ncbi_tax_id) = (select uniprot, ncbi_tax_id from kegg_new.genome as g where g.code = o.code);`,
 	`alter table kegg_new.organism add column tsv tsvector generated always as (to_tsvector('simple', id::text || ' ' || code || ' ' || coalesce(uniprot, '') || ' ' || coalesce(ncbi_tax_id::text, '') || ' ' || name || ' ' || coalesce(common, ''))) stored;`,
 	`create index on kegg_new.organism using gin (tsv);`,
 	`alter table kegg_new.pathway add column tsv tsvector generated always as (to_tsvector('simple', id::text || ' ' || name)) stored;`,

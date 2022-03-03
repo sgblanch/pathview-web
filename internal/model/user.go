@@ -3,6 +3,7 @@ package model
 import (
 	"database/sql"
 	"encoding/gob"
+	"errors"
 	"fmt"
 	"time"
 
@@ -56,7 +57,7 @@ func (p *User) Login(claims jwt.MapClaims) error {
 	user.EmailVerified = claims["email_verified"].(bool)
 
 	err = config.Get().DB.NamedGet(p, _sql["user_select"], user)
-	if err == sql.ErrNoRows {
+	if errors.Is(err, sql.ErrNoRows) {
 		p = user
 		return p.Create()
 	} else if err != nil {
