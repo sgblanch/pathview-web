@@ -9,8 +9,7 @@ LABEL description="runner for web front-end to pathview R package" \
 
 WORKDIR /pathview
 
-COPY scripts scripts
-
+COPY scripts/install.R scripts/install.R
 RUN useradd pathview \
     && install -m 0755 -o pathview -g pathview -d /data \
     && printf "/usr/local/lib/R/lib\n" > /etc/ld.so.conf.d/R.conf \
@@ -31,6 +30,7 @@ RUN useradd pathview \
     && apt-get autoclean -y \
     && rm -rf /var/lib/apt/lists/*
 
+COPY scripts scripts
 COPY --from=builder /app/pathview-web .
 
 USER pathview

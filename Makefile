@@ -8,7 +8,7 @@ DOCKER_DEPS = $(SOURCES) $(SOURCES_WEB)
 
 READ_YML = 'YAML::load(STDIN.read)["services"].each{|key, value|puts key if !value.key?("build")}'
 
-COMPOSE_SERVICES = node $(shell ruby -ryaml -e $(READ_YML) < deployments/docker-compose.yml)
+COMPOSE_SERVICES = $(shell ruby -ryaml -e $(READ_YML) < deployments/docker-compose.yml)
 COMPOSE_OPTS = --env-file .env -f deployments/docker-compose.yml
 COMPOSE_DEPS = $(DOCKER_DEPS) .env deployments/docker-compose.yml deployments/pathview.env
 COMPOSE_DEV_OPTS = $(COMPOSE_OPTS) -f deployments/docker-compose.dev.yml
@@ -58,4 +58,4 @@ stamps: | .stamps
 
 clean:
 	docker compose $(COMPOSE_DEV_OPTS) down --volumes
-	rm -rf .stamps vendor web/resources/node_modules web/static
+	rm -rf .stamps vendor web/static
